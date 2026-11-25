@@ -68,6 +68,26 @@ test('handleUpload accepts pdf via filename extension fallback', async () => {
   assert.match(body.data.id, /\.pdf$/);
 });
 
+test('handleUpload accepts xlsx via filename extension fallback', async () => {
+  const formData = new FormData();
+  formData.set('file', new File([new Uint8Array([1, 2, 3])], 'report.xlsx', {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  }));
+  const request = new Request('https://api.test/images', {
+    method: 'POST',
+    body: formData,
+  });
+  const response = await handleUpload(request, createBaseEnv());
+  const body = await response.json();
+
+  assert.equal(response.status, 201);
+  assert.equal(
+    body.data.type,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  assert.match(body.data.id, /\.xlsx$/);
+});
+
 test('handleUpload returns existing object metadata for duplicate content', async () => {
   const head = mock.fn(async () => ({
     size: 999,
