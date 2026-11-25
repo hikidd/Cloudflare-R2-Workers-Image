@@ -22,6 +22,17 @@ export const EXT_TO_MIME: Record<string, string> = {
   png: 'image/png',
   gif: 'image/gif',
   webp: 'image/webp',
+  // General-purpose file types supported by this fork
+  txt: 'text/plain; charset=utf-8',
+  md: 'text/plain; charset=utf-8',
+  log: 'text/plain; charset=utf-8',
+  csv: 'text/csv; charset=utf-8',
+  json: 'application/json; charset=utf-8',
+  pdf: 'application/pdf',
+  zip: 'application/zip',
+  gz: 'application/gzip',
+  tar: 'application/x-tar',
+  bin: 'application/octet-stream',
 };
 
 export const DEFAULT_MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB

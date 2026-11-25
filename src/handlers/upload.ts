@@ -3,6 +3,7 @@ import { detectImageType } from '../services/image';
 import { buildKey, putImage, findKeyById, parseKey, mimeFromExt } from '../services/storage';
 import { contentHash, generateDeleteToken, hashIp, hashToken } from '../utils/hash';
 import { parseMaxFileSize, sanitizeFilename } from '../utils/validation';
+import { EXT_TO_MIME } from '../config';
 import { successResponse, errorResponse } from '../utils/response';
 
 export async function handleUpload(request: Request, env: Env): Promise<Response> {
@@ -39,10 +40,15 @@ export async function handleUpload(request: Request, env: Env): Promise<Response
     return errorResponse(`File too large. Maximum size is ${maxSize} bytes.`, 413);
   }
 
-  const detected = detectImageType(fileData);
-  if (!detected) {
-    return errorResponse('Unsupported image format. Allowed: JPEG, PNG, GIF, WebP.');
-  }
+  // Images are detected by magic bytes; any other file falls back to its
+  // extension so txt/pdf/zip/etc. can be hosted by this fork.
+  const extension = originalName.includes('.')
+    ? originalName.split('.').pop()!.toLowerCase()
+    : 'bin';
+  const detected = detectImageType(fileData) ?? {
+    ext: extension,
+    mime: EXT_TO_MIME[extension] ?? 'application/octet-stream',
+  };
 
   const hash = await contentHash(fileData);
   const key = buildKey(hash, detected.ext);

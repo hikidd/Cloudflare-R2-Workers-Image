@@ -26,7 +26,7 @@ A lightweight image hosting API built on Cloudflare Workers + R2.
 
 ## One-Click Deploy on Cloudflare
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/lj200612/Cloudflare-R2-Workers-Image)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/hikidd/Cloudflare-R2-Workers-Image)
 
 After clicking the button, only fill the required variable:
 

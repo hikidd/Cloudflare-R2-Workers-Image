@@ -41,7 +41,7 @@ export async function handleServe(
 
   const headers = new Headers();
   headers.set('Content-Type', mimeFromExt(parsed.ext));
-  headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+  headers.set('Cache-Control', 'public, max-age=3600');
   headers.set('ETag', object.etag);
 
   // Check If-None-Match
@@ -71,7 +71,7 @@ async function handleTransformedImage(
     return new Response(object.body, {
       headers: {
         'Content-Type': mimeFromExt(ext),
-        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': 'public, max-age=3600',
       },
     });
   }

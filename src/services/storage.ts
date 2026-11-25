@@ -30,7 +30,7 @@ export async function putImage(
   return bucket.put(key, data, {
     httpMetadata: {
       contentType,
-      cacheControl: 'public, max-age=31536000, immutable',
+      cacheControl: 'public, max-age=3600',
     },
     customMetadata: {
       originalName: metadata.originalName,

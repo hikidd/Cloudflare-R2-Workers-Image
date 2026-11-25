@@ -40,15 +40,32 @@ test('handleUpload rejects oversized body', async () => {
   assert.match((await response.json()).error, /File too large/);
 });
 
-test('handleUpload rejects unsupported format', async () => {
+test('handleUpload accepts non-image raw upload with octet-stream fallback', async () => {
   const request = new Request('https://api.test/images', {
     method: 'POST',
     body: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
   });
   const response = await handleUpload(request, createBaseEnv());
 
-  assert.equal(response.status, 400);
-  assert.match((await response.json()).error, /Unsupported image format/);
+  assert.equal(response.status, 201);
+  assert.equal((await response.json()).data.type, 'application/octet-stream');
+});
+
+test('handleUpload accepts pdf via filename extension fallback', async () => {
+  const formData = new FormData();
+  formData.set('file', new File([new Uint8Array([1, 2, 3])], 'notes.pdf', {
+    type: 'application/pdf',
+  }));
+  const request = new Request('https://api.test/images', {
+    method: 'POST',
+    body: formData,
+  });
+  const response = await handleUpload(request, createBaseEnv());
+  const body = await response.json();
+
+  assert.equal(response.status, 201);
+  assert.equal(body.data.type, 'application/pdf');
+  assert.match(body.data.id, /\.pdf$/);
 });
 
 test('handleUpload returns existing object metadata for duplicate content', async () => {

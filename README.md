@@ -4,6 +4,8 @@
 
 一个基于 Cloudflare Workers + R2 的轻量图片托管 API。
 
+> **本 fork 的改动**：支持 txt / md / pdf / zip 等任意扩展名文件（图片仍按 magic bytes 识别），缓存头改为 1 小时以免绕过过期删除，默认单文件上限改为 20MB。部署后请在 R2 桶上为 `images/` 前缀配置 Lifecycle 规则 `--expire-days 1`，实现 1 天自动删除。
+
 ## 功能
 
 - 上传图片（`multipart/form-data` 或原始请求体）
@@ -26,7 +28,7 @@
 
 ## Cloudflare 一键部署
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/lj200612/Cloudflare-R2-Workers-Image)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/hikidd/Cloudflare-R2-Workers-Image)
 
 点击按钮后，仅需填写必要变量：
 

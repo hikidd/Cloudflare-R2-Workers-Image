@@ -60,7 +60,7 @@ test('handleServe returns image body with cache headers', async () => {
 
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('Content-Type'), 'image/png');
-  assert.equal(response.headers.get('Cache-Control'), 'public, max-age=31536000, immutable');
+  assert.equal(response.headers.get('Cache-Control'), 'public, max-age=3600');
   assert.deepEqual(Array.from(bytes), [1, 2, 3]);
 });
 
